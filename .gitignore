@@ -1,0 +1,12 @@
+# Java
+*.class
+
+# Local input/output
+input.txt
+sample.txt
+output.txt
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
