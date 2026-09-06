@@ -7,6 +7,8 @@
 풀이를 시각적으로 복습할 수 있는 인터랙티브 페이지를 함께 관리합니다.
 
 - [인터랙티브 알고리즘 노트](https://rumblebot-0318.github.io/algorithm-study/)
+- [30일 NeetCode + SWEA 워밍업 커리큘럼](https://rumblebot-0318.github.io/algorithm-study/curriculum.html)
+- [커리큘럼 Markdown](./curriculum/30-day-neetcode-swea-warmup.md)
 
 ## 진행 문제
 
