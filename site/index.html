@@ -1,1 +1,69 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Algorithm Study</title><link rel="stylesheet" href="assets/style.css"></head><body><main class="wrap"><section class="hero"><div class="eyebrow">SWEA Algorithm Notes</div><h1>문제 풀이를 그림처럼 보는 알고리즘 노트</h1><p>오늘 배운 파라메트릭 서치의 핵심은 <b>mid는 인덱스가 아니라 정답 후보</b>라는 점이다. 문제마다 mid가 시간, 개수, 거리, 비용으로 바뀐다.</p><div class="nav"><a class="btn" href="curriculum.html">30일 커리큘럼 보기</a><a class="btn secondary" href="problems/11446.html">오늘 학습: 사탕 가방</a><a class="btn secondary" href="#problems">문제별 페이지 보기</a></div></section><section class="grid" id="problems"><article class="card"><span class="tag">D3</span><span class="tag">Parametric Search</span><h3>11446. 사탕 가방</h3><p>mid = 가방 개수 후보. 가능하면 더 많이 만들어본다.</p><a href="problems/11446.html">인터랙티브로 보기 →</a></article><article class="card"><span class="tag">D2</span><span class="tag">Counting</span><h3>1204. 최빈수 구하기</h3><p>값 범위가 작으면 배열 인덱스로 빈도를 센다.</p><a href="problems/1204.html">인터랙티브로 보기 →</a></article><article class="card"><span class="tag">D2</span><span class="tag">Simulation</span><h3>1954. 달팽이 숫자</h3><p>다음 칸으로 갈 수 있으면 이동, 막히면 방향 전환.</p><a href="problems/1954.html">인터랙티브로 보기 →</a></article><article class="card"><span class="tag">D2</span><span class="tag">Brute Force</span><h3>2001. 파리 퇴치</h3><p>모든 시작 좌표를 돈다 → 함수로 M×M 합을 계산한다.</p><a href="problems/2001.html">인터랙티브로 보기 →</a></article></section><section class="panel"><h2>오늘 배운 파라메트릭 서치 판단표</h2><table><thead><tr><th>목표</th><th>가능 패턴</th><th>true일 때</th><th>예시</th></tr></thead><tbody><tr><td>최소값</td><td>F F F T T</td><td><code>ans = mid; right = mid - 1;</code></td><td>입국심사 최소 시간</td></tr><tr><td>최대값</td><td>T T T F F</td><td><code>ans = mid; left = mid + 1;</code></td><td>사탕 가방 최대 개수</td></tr></tbody></table><p class="note">가능하면 일단 저장한다. 최대 찾기면 오른쪽, 최소 찾기면 왼쪽.</p></section><footer class="footer">GitHub: <a href="https://github.com/rumblebot-0318/algorithm-study">rumblebot-0318/algorithm-study</a></footer></main></body></html>
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Algorithm Study</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Algorithm Notes</div>
+    <h1>문제 풀이를 그림처럼 보는 알고리즘 노트</h1>
+    <p>개념 워밍업 문제를 풀고, 헷갈렸던 지점을 README와 인터랙티브 페이지로 같이 남긴다.</p>
+    <div class="nav">
+      <a class="btn" href="curriculum.html">30일 커리큘럼 보기</a>
+      <a class="btn secondary" href="problems/two-sum.html">오늘 학습: Two Sum</a>
+      <a class="btn secondary" href="problems/11446.html">사탕 가방 복습</a>
+    </div>
+  </section>
+
+  <section class="grid" id="problems">
+    <article class="card">
+      <span class="tag">NeetCode</span><span class="tag">Easy</span><span class="tag">HashMap</span>
+      <h3>1. Two Sum</h3>
+      <p>현재 값의 짝인 <code>target - cur</code>가 이전에 나왔는지 HashMap으로 확인한다.</p>
+      <a href="problems/two-sum.html">인터랙티브로 보기 →</a>
+    </article>
+    <article class="card">
+      <span class="tag">SWEA</span><span class="tag">D3</span><span class="tag">Parametric Search</span>
+      <h3>11446. 사탕 가방</h3>
+      <p><code>mid = 가방 개수 후보</code>. 가능하면 더 많이 만들어본다.</p>
+      <a href="problems/11446.html">인터랙티브로 보기 →</a>
+    </article>
+    <article class="card">
+      <span class="tag">SWEA</span><span class="tag">D2</span><span class="tag">Counting</span>
+      <h3>1204. 최빈수 구하기</h3>
+      <p>값 범위가 작으면 배열 인덱스로 빈도를 센다.</p>
+      <a href="problems/1204.html">인터랙티브로 보기 →</a>
+    </article>
+    <article class="card">
+      <span class="tag">SWEA</span><span class="tag">D2</span><span class="tag">Simulation</span>
+      <h3>1954. 달팽이 숫자</h3>
+      <p>다음 칸으로 갈 수 있으면 이동, 막히면 방향 전환.</p>
+      <a href="problems/1954.html">인터랙티브로 보기 →</a>
+    </article>
+    <article class="card">
+      <span class="tag">SWEA</span><span class="tag">D2</span><span class="tag">Brute Force</span>
+      <h3>2001. 파리 퇴치</h3>
+      <p>모든 시작 좌표를 돈다 → 함수로 M×M 합을 계산한다.</p>
+      <a href="problems/2001.html">인터랙티브로 보기 →</a>
+    </article>
+  </section>
+
+  <section class="panel">
+    <h2>최근 배운 핵심 질문</h2>
+    <table>
+      <thead><tr><th>문제</th><th>질문 만들기</th><th>자료구조/패턴</th></tr></thead>
+      <tbody>
+        <tr><td>Two Sum</td><td>내 짝 <code>target - cur</code>가 이전에 나왔나?</td><td>HashMap</td></tr>
+        <tr><td>사탕 가방</td><td><code>mid</code>개 가방을 만들 수 있나?</td><td>Parametric Search</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer class="footer">GitHub: <a href="https://github.com/rumblebot-0318/algorithm-study">rumblebot-0318/algorithm-study</a></footer>
+</main>
+</body>
+</html>

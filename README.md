@@ -14,6 +14,7 @@
 
 | 번호 | 문제 | 난이도 | 유형 | 풀이 | 인터랙티브 |
 |---:|---|---|---|---|---|
+| 1 | Two Sum | Easy | HashMap, 보수값 찾기 | [풀이](./NeetCode/Easy/1-two-sum/README.md) | [페이지](https://rumblebot-0318.github.io/algorithm-study/problems/two-sum.html) |
 | 11446 | 사탕 가방 | D3 | 파라메트릭 서치, 이분 탐색 | [풀이](./SWEA/D3/11446-사탕-가방/README.md) | [페이지](https://rumblebot-0318.github.io/algorithm-study/problems/11446.html) |
 | 1204 | 최빈수 구하기 | D2 | 카운팅 배열, 빈도수 계산 | [풀이](./SWEA/D2/1204-최빈수-구하기/README.md) | [페이지](https://rumblebot-0318.github.io/algorithm-study/problems/1204.html) |
 | 1954 | 달팽이 숫자 | D2 | 2차원 배열, 방향 전환, 구현 | [풀이](./SWEA/D2/1954-달팽이-숫자/README.md) | [페이지](https://rumblebot-0318.github.io/algorithm-study/problems/1954.html) |
