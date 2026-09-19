@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>포인터 탐험 놀이터 — 연결 리스트 합치기</title>
+<style>
+:root{--ink:#182033;--muted:#65708a;--paper:#fffdf7;--line:#d9deea;--a:#ff765d;--b:#3e9b8c;--out:#4d68dd;--sun:#ffd363;--bg:#f4f0e8;--shadow:0 12px 28px rgba(37,44,67,.12)}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 18% 4%,#fff 0 10%,transparent 32%),var(--bg);color:var(--ink);font-family:ui-rounded,"SF Pro Rounded","Noto Sans KR",system-ui,sans-serif;line-height:1.5}
+main{max-width:1080px;margin:auto;padding:28px 18px 60px}.hero{display:flex;gap:20px;align-items:flex-end;justify-content:space-between;margin:14px 0 24px}.eyebrow{font-weight:800;color:var(--out);letter-spacing:.06em;font-size:.8rem}.hero h1{font-size:clamp(1.75rem,4vw,2.8rem);line-height:1.08;margin:6px 0}.hero p{max-width:620px;margin:0;color:var(--muted)}.badge{background:#fff4c6;border:2px solid #edc34e;padding:10px 13px;border-radius:18px;font-size:.9rem;font-weight:800;white-space:nowrap}
+.grid{display:grid;grid-template-columns:1.55fr .9fr;gap:18px}.card{background:var(--paper);border:1px solid rgba(74,81,111,.14);box-shadow:var(--shadow);border-radius:24px;padding:22px}.card h2{font-size:1.08rem;margin:0 0 12px}.stage{min-height:402px;position:relative;overflow:hidden}.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.84rem;font-weight:700;color:var(--muted)}.dot{width:11px;height:11px;display:inline-block;border-radius:50%;margin-right:5px}.list-row{margin:23px 0 7px}.row-title{display:flex;justify-content:space-between;font-weight:800;font-size:.9rem}.track{display:flex;align-items:center;gap:8px;min-height:82px;padding:18px 6px 0}.node{width:47px;height:47px;border:2px solid currentColor;display:grid;place-items:center;border-radius:16px;background:white;font-weight:900;position:relative;transition:.3s transform,.3s opacity,.3s background,.3s box-shadow}.node::after{content:"→";position:absolute;right:-14px;color:#a7afc0;font-size:19px}.node:last-child::after{content:"∅";right:-19px;font-size:15px}.node.a{color:var(--a)}.node.b{color:var(--b)}.node.used{opacity:.28;transform:scale(.86)}.node.pointer{background:#fff3ed;box-shadow:0 0 0 5px rgba(255,118,93,.16)}.node.pointer.b{background:#e9fbf6;box-shadow:0 0 0 5px rgba(62,155,140,.15)}.pointer-label{position:absolute;top:-29px;background:currentColor;color:#fff;padding:2px 7px;border-radius:7px;font-size:.72rem;font-weight:900;white-space:nowrap}
+.output{border-top:2px dashed #d4d9e6;margin-top:27px;padding-top:12px}.output .track{min-height:65px;padding-top:12px}.node.out{color:var(--out);background:#eef1ff;animation:pop .28s ease both}@keyframes pop{from{transform:scale(.6)}to{transform:scale(1)}}
+.status{background:#eef1ff;border-radius:16px;padding:13px 15px;min-height:76px;font-size:.95rem}.status strong{color:var(--out)}.controls{display:flex;gap:9px;margin-top:16px;flex-wrap:wrap}button{font:inherit;border:0;border-radius:13px;padding:11px 14px;font-weight:850;cursor:pointer;min-height:44px;transition:.15s transform,.15s filter}button:hover{transform:translateY(-1px);filter:brightness(.98)}button:active{transform:translateY(1px)}.primary{background:var(--ink);color:white}.soft{background:#e8ebf5;color:var(--ink)}.auto.on{background:#fff0be;color:#71530b}.hint{font-size:.84rem;color:var(--muted);margin:13px 0 0}
+.step{border-bottom:1px solid var(--line);padding:13px 0;display:flex;gap:12px}.step:last-child{border:0}.num{flex:0 0 29px;height:29px;display:grid;place-items:center;border-radius:50%;background:#e8ebf5;font-weight:900}.step.active .num{background:var(--sun)}.step b{display:block}.step span{font-size:.88rem;color:var(--muted)}code{font-family:"SFMono-Regular",Consolas,monospace;background:#edf0f7;padding:2px 5px;border-radius:5px;font-size:.85em}.code{background:#1e2536;color:#dce5ff;border-radius:16px;padding:14px;overflow:auto;font:13px/1.72 "SFMono-Regular",Consolas,monospace}.line{display:block;padding:0 6px;border-radius:5px}.line.hot{background:#354368;color:#fff}.pattern{margin-top:18px}.pattern-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.pattern button{background:#fff;border:1px solid var(--line);text-align:left;padding:13px}.pattern button.selected{border:2px solid var(--out);background:#f0f2ff}.pattern button small{display:block;color:var(--muted);font-weight:600;margin-top:3px}.tip{margin-top:18px;background:#fff5d5;border-radius:14px;padding:13px;font-size:.9rem}.tip b{color:#765306}@media(max-width:800px){.hero{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.badge{white-space:normal}.pattern-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<header class="hero"><div><div class="eyebrow">POINTER PATTERN PLAYGROUND</div><h1>포인터는 “손가락”이야 ☝️</h1><p>연결 리스트에서 포인터는 숫자를 복사하는 게 아니라, <b>다음 노드를 가리키는 손가락</b>이야. 두 줄을 차례대로 합치며 손가락이 어떻게 움직이는지 직접 눌러 보자.</p></div><div class="badge">오늘의 패턴<br>두 리스트 + tail</div></header>
+<div class="grid"><section class="card stage"><div class="legend"><span><i class="dot" style="background:var(--a)"></i>list1 / p1</span><span><i class="dot" style="background:var(--b)"></i>list2 / p2</span><span><i class="dot" style="background:var(--out)"></i>합친 결과 / tail</span></div>
+<div class="list-row"><div class="row-title"><span>list1</span><span id="p1Text">p1은 1을 가리켜요</span></div><div id="listA" class="track"></div></div>
+<div class="list-row"><div class="row-title"><span>list2</span><span id="p2Text">p2는 1을 가리켜요</span></div><div id="listB" class="track"></div></div>
+<div class="output"><div class="row-title"><span>dummy → 합친 결과</span><span id="tailText">tail은 dummy를 가리켜요</span></div><div id="out" class="track"></div></div>
+<div id="status" class="status"></div><div class="controls"><button class="primary" id="next">다음 한 걸음 →</button><button class="soft" id="reset">처음부터 ↺</button><button class="soft auto" id="auto">자동 재생 ▶</button></div><p class="hint">팁: 한 번에 이해하려 하지 말고, 버튼을 누를 때마다 <b>p1, p2, tail</b>이 어디를 가리키는지 보자.</p></section>
+<aside class="card"><h2>지금 하는 일</h2><div id="steps"></div><div class="tip"><b>제일 중요한 약속</b><br>작은 값을 결과 뒤에 붙인 다음에는 <code>tail = tail.next</code>로 tail도 한 칸 이동한다.</div><div class="pattern"><h2>포인터 패턴 지도</h2><div class="pattern-grid" id="patterns"></div></div></aside></div>
+<section class="card" style="margin-top:18px"><h2>코드와 화면 연결하기</h2><pre class="code"><span id="l0" class="line">ListNode dummy = new ListNode(-1);</span><span id="l1" class="line">ListNode tail = dummy;</span><span id="l2" class="line">while (p1 != null && p2 != null) {</span><span id="l3" class="line">  if (p1.val &lt;= p2.val) tail.next = p1;</span><span id="l4" class="line">  else                  tail.next = p2;</span><span id="l5" class="line">  tail = tail.next;  // 꼬리도 앞으로!</span><span id="l6" class="line">}</span><span id="l7" class="line">tail.next = (p1 != null) ? p1 : p2;</span><span id="l8" class="line">return dummy.next;</span></pre></section>
+</main>
+<script>
+const A=[1,2,4],B=[1,3,4];let i=0,j=0,out=[],done=false,timer=null;
+const qs=s=>document.querySelector(s);const el=(tag,cls,txt)=>{const e=document.createElement(tag);e.className=cls;e.textContent=txt;return e};
+const steps=[['비교하기','p1과 p2가 가리키는 숫자 중 더 작은 숫자를 찾는다.'],['붙이기','작은 노드를 tail 뒤에 붙인다.'],['손가락 이동','뽑아 쓴 리스트 포인터와 tail을 앞으로 한 칸 옮긴다.'],['남은 것 붙이기','한 줄이 끝나면 나머지는 이미 정렬됐으니 통째로 연결한다.']];
+const patterns=[['두 포인터','두 곳을 동시에 비교해요','지금 연습 중'],['빠른·느린 포인터','한 포인터는 2칸씩 가요','중간 찾기 / 사이클'],['슬라이딩 윈도우','왼쪽·오른쪽 범위를 움직여요','문자열 / 배열 구간']];
+function node(v,type,index,ptr,used){const n=el('div','node '+type+(used?' used':'')+(ptr?' pointer':''),v);if(ptr){const l=el('span','pointer-label',ptr);n.append(l)}return n}
+function render(){const la=qs('#listA'),lb=qs('#listB'),oo=qs('#out');la.innerHTML='';lb.innerHTML='';oo.innerHTML='';A.forEach((v,k)=>la.append(node(v,'a',k,k===i?'p1':'',k<i)));B.forEach((v,k)=>lb.append(node(v,'b',k,k===j?'p2':'',k<j)));if(!out.length)oo.append(el('span','hint','아직 dummy만 있어요.'));out.forEach(v=>oo.append(node(v,'out')));qs('#p1Text').textContent=i<A.length?'p1은 '+A[i]+'을 가리켜요':'p1은 끝(∅)에 도착!';qs('#p2Text').textContent=j<B.length?'p2는 '+B[j]+'을 가리켜요':'p2는 끝(∅)에 도착!';qs('#tailText').textContent=out.length?'tail은 '+out[out.length-1]+' 뒤에 있어요':'tail은 dummy를 가리켜요';
+let active=done?3:(i<A.length&&j<B.length?0:3);qs('#steps').innerHTML='';steps.forEach((s,k)=>{const d=el('div','step '+(k===active?'active':''));d.append(el('div','num',k+1));const t=document.createElement('div');t.innerHTML='<b>'+s[0]+'</b><span>'+s[1]+'</span>';d.append(t);qs('#steps').append(d)});document.querySelectorAll('.line').forEach(x=>x.classList.remove('hot'));let hot=done?'l8':(i>=A.length||j>=B.length?'l7':(A[i]<=B[j]?'l3':'l4'));qs('#'+hot).classList.add('hot')}
+function speak(text){qs('#status').innerHTML=text}
+function next(){if(done){speak('<strong>완성!</strong> 처음부터 버튼으로 다시 움직여 볼 수 있어.');return}if(i<A.length&&j<B.length){if(A[i]<=B[j]){const v=A[i];out.push(v);i++;speak('<strong>'+v+'이 더 작거나 같아요.</strong> list1에서 '+v+'을 꺼내 결과 뒤에 붙였어요. 이제 p1과 tail을 앞으로!')}else{const v=B[j];out.push(v);j++;speak('<strong>'+v+'이 더 작아요.</strong> list2에서 '+v+'을 꺼내 결과 뒤에 붙였어요. 이제 p2와 tail을 앞으로!')}}else{const rest=i<A.length?A.slice(i):B.slice(j);out.push(...rest);i=A.length;j=B.length;done=true;speak('<strong>한 줄이 끝났어요!</strong> 남은 '+rest.join(' → ')+'은 이미 정렬되어 있으니 비교 없이 그대로 붙이면 끝. <strong>return dummy.next</strong>!');stop()}render()}
+function reset(){i=0;j=0;out=[];done=false;stop();speak('<strong>준비 완료.</strong> dummy는 가짜 시작점이고, tail은 처음에 dummy를 가리켜요. 작은 숫자부터 붙여 볼까?');render()}
+function stop(){clearInterval(timer);timer=null;qs('#auto').classList.remove('on');qs('#auto').textContent='자동 재생 ▶'}
+qs('#next').onclick=next;qs('#reset').onclick=reset;qs('#auto').onclick=()=>{if(timer){stop()}else{timer=setInterval(()=>{next();if(done)stop()},850);qs('#auto').classList.add('on');qs('#auto').textContent='멈추기 ■'}};
+qs('#patterns').innerHTML='';
+patterns.forEach((p,k)=>{
+  const b=el('button',k===0?'selected':'',p[0]);
+  b.innerHTML='<b>'+p[0]+'</b><small>'+p[1]+'</small>';
+  b.onclick=()=>{
+    if(k===0) speak('<strong>두 포인터:</strong> 두 줄의 현재 숫자를 비교하며, 작은 쪽 포인터만 한 칸 움직여요.');
+    else if(k===1) speak('<strong>빠른·느린 포인터:</strong> 한 명은 1칸, 한 명은 2칸 이동해요. 연결 리스트의 중간이나 사이클을 찾을 때 써요.');
+    else speak('<strong>슬라이딩 윈도우:</strong> 배열/문자열에서 왼쪽·오른쪽 포인터로 “현재 구간”을 관리해요.');
+    qs('#patterns').querySelectorAll('button').forEach(x=>x.classList.remove('selected'));
+    b.classList.add('selected');
+  };
+  qs('#patterns').append(b);
+});
+reset();
+</script>
+</body>
+</html>
