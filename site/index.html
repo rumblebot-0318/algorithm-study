@@ -14,13 +14,26 @@
     <p>개념 워밍업 문제를 풀고, 헷갈렸던 지점을 README와 인터랙티브 페이지로 같이 남긴다.</p>
     <div class="nav">
       <a class="btn" href="curriculum.html">30일 커리큘럼 보기</a>
-      <a class="btn secondary" href="problems/pointer-patterns.html">새 학습: 포인터 탐험 놀이터</a>
+      <a class="btn secondary" href="problems/tree-traversal.html">새 학습: 트리 BFS·DFS</a>
+      <a class="btn secondary" href="problems/pointer-patterns.html">포인터 탐험 놀이터</a>
       <a class="btn secondary" href="problems/two-sum.html">Two Sum</a>
       <a class="btn secondary" href="problems/11446.html">사탕 가방 복습</a>
     </div>
   </section>
 
   <section class="grid" id="problems">
+    <article class="card">
+      <span class="tag">완료</span><span class="tag">NeetCode</span><span class="tag">BFS</span><span class="tag">Tree</span>
+      <h3>104. Maximum Depth of Binary Tree</h3>
+      <p><code>nodeSize</code>로 현재 레벨 경계를 고정하고, 레벨이 끝날 때마다 <code>depth++</code> 한다.</p>
+      <a href="problems/tree-traversal.html#maximum-depth">BFS 풀이 복습 →</a>
+    </article>
+    <article class="card">
+      <span class="tag">완료</span><span class="tag">NeetCode</span><span class="tag">DFS/BFS</span><span class="tag">Tree</span>
+      <h3>226. Invert Binary Tree</h3>
+      <p>새 노드를 만들지 않고 <code>left</code>와 <code>right</code> 참조를 직접 교환한다.</p>
+      <a href="problems/tree-traversal.html#invert-tree">트리 뒤집기 복습 →</a>
+    </article>
     <article class="card">
       <span class="tag">NeetCode</span><span class="tag">Easy</span><span class="tag">Linked List</span><span class="tag">Two Pointer</span>
       <h3>21. Merge Two Sorted Lists</h3>
@@ -64,6 +77,8 @@
     <table>
       <thead><tr><th>문제</th><th>질문 만들기</th><th>자료구조/패턴</th></tr></thead>
       <tbody>
+        <tr><td>Maximum Depth</td><td>이번 레벨의 노드 수는 몇 개인가?</td><td>Queue BFS + <code>nodeSize</code></td></tr>
+        <tr><td>Invert Binary Tree</td><td>새 노드를 만들지 않고 자식을 어떻게 바꿀까?</td><td><code>temp</code>로 left/right 교환</td></tr>
         <tr><td>Two Sum</td><td>내 짝 <code>target - cur</code>가 이전에 나왔나?</td><td>HashMap</td></tr>
         <tr><td>사탕 가방</td><td><code>mid</code>개 가방을 만들 수 있나?</td><td>Parametric Search</td></tr>
       </tbody>
