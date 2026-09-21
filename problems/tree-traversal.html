@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>트리 BFS·DFS — Maximum Depth와 Invert Tree</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .tree-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+    .tree-box { min-height:250px; display:flex; align-items:center; justify-content:center; padding:20px; background:#f7f8fc; border:1px solid #dce1ee; border-radius:16px; overflow:auto; }
+    .tree { display:flex; flex-direction:column; align-items:center; gap:14px; min-width:360px; }
+    .tree-row { display:flex; align-items:center; justify-content:center; gap:38px; position:relative; }
+    .node { width:46px; height:46px; border-radius:50%; display:grid; place-items:center; background:#fff; border:3px solid #4d68dd; color:#273a96; font-weight:800; box-shadow:0 3px 8px rgba(42,56,119,.14); }
+    .node.root { background:#4d68dd; color:#fff; }.node.swap { border-color:#e46f52; color:#a13b24; }.node.swap.root { background:#e46f52; color:#fff; }
+    .arrow { color:#8690aa; font-size:18px; transform:rotate(90deg); margin:-8px 0; }
+    .level { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }.level-label { font-size:.83rem; color:#65708a; min-width:58px; align-self:center; }
+    .callout { border-left:4px solid #4d68dd; padding:12px 14px; margin:14px 0; background:#eff2ff; border-radius:0 10px 10px 0; }
+    .code-block { white-space:pre-wrap; overflow:auto; background:#1e2536; color:#e8eeff; padding:18px; border-radius:12px; line-height:1.6; font-size:.9rem; }
+    .done { color:#187a50; font-weight:800; }.compare td:first-child { font-weight:700; }
+    @media (max-width:760px) { .tree-grid { grid-template-columns:1fr; } .tree { min-width:300px; } }
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <div class="nav"><a href="../index.html">← 홈</a><a href="../curriculum.html">30일 커리큘럼</a></div>
+  <section class="hero">
+    <div class="eyebrow">COMPLETED · TREE TRAVERSAL</div>
+    <h1>오늘 푼 트리 2문제</h1>
+    <p><b>Queue 기반 BFS</b>로 최대 깊이를 세고, <b>Deque 기반 반복 DFS</b>로 모든 노드의 자식을 뒤집었다.</p>
+  </section>
+
+  <section class="tree-grid">
+    <article class="card" id="maximum-depth">
+      <span class="tag">완료</span><span class="tag">NeetCode 104</span><span class="tag">BFS</span>
+      <h2>Maximum Depth of Binary Tree</h2>
+      <p class="done">✓ Queue + 레벨 순회</p>
+      <div class="tree-box">
+        <div class="tree">
+          <div class="level"><span class="level-label">depth 1</span><span class="node root">3</span></div>
+          <div class="arrow">↓</div>
+          <div class="level"><span class="level-label">depth 2</span><span class="node">9</span><span class="node">20</span></div>
+          <div class="arrow">↓</div>
+          <div class="level"><span class="level-label">depth 3</span><span class="node">15</span><span class="node">7</span></div>
+        </div>
+      </div>
+      <div class="callout"><code>nodeSize = queue.size()</code>는 <b>현재 레벨에 원래 있던 노드 수</b>다. 그 수만큼 처리한 뒤 <code>depth++</code> 하면 된다.</div>
+      <pre class="code-block">Queue&lt;TreeNode&gt; queue = new LinkedList&lt;&gt;();
+queue.offer(root);
+int depth = 0;
+
+while (!queue.isEmpty()) {
+    int nodeSize = queue.size();
+
+    for (int i = 0; i &lt; nodeSize; i++) {
+        TreeNode cur = queue.poll();
+        if (cur.left != null) queue.offer(cur.left);
+        if (cur.right != null) queue.offer(cur.right);
+    }
+    depth++;
+}
+return depth;</pre>
+    </article>
+
+    <article class="card" id="invert-tree">
+      <span class="tag">완료</span><span class="tag">NeetCode 226</span><span class="tag">Tree</span>
+      <h2>Invert Binary Tree</h2>
+      <p class="done">✓ 기존 노드의 left/right 직접 교환</p>
+      <div class="tree-box">
+        <div class="tree">
+          <div class="level"><span class="node swap root">4</span></div>
+          <div class="arrow">↓</div>
+          <div class="level"><span class="node swap">7</span><span class="node swap">2</span></div>
+          <div class="arrow">↓</div>
+          <div class="level"><span class="node swap">9</span><span class="node swap">6</span><span class="node swap">3</span><span class="node swap">1</span></div>
+        </div>
+      </div>
+      <div class="callout">새 노드를 만들 필요 없이 <code>temp</code>에 왼쪽을 보관하고, <code>left/right</code> 참조만 교환한다. 마지막에는 항상 <code>root</code>를 반환한다.</div>
+      <pre class="code-block">Deque&lt;TreeNode&gt; deque = new ArrayDeque&lt;&gt;();
+deque.offer(root);
+
+while (!deque.isEmpty()) {
+    TreeNode cur = deque.poll();
+
+    TreeNode temp = cur.left;
+    cur.left = cur.right;
+    cur.right = temp;
+
+    if (cur.right != null) deque.offer(cur.right);
+    if (cur.left != null) deque.offer(cur.left);
+}
+return root;</pre>
+    </article>
+  </section>
+
+  <section class="panel">
+    <h2>오늘의 자료구조 정리</h2>
+    <table class="compare">
+      <thead><tr><th>목적</th><th>선언</th><th>핵심 메서드</th><th>언제 레벨 크기가 필요한가?</th></tr></thead>
+      <tbody>
+        <tr><td>BFS</td><td><code>Queue&lt;T&gt; queue = new LinkedList&lt;&gt;();</code></td><td><code>offer / poll</code></td><td>깊이·레벨별 결과처럼 레벨 경계가 필요할 때</td></tr>
+        <tr><td>반복 DFS</td><td><code>Deque&lt;T&gt; stack = new ArrayDeque&lt;&gt;();</code></td><td><code>push / pop</code></td><td>보통 불필요. 단순히 모든 노드를 방문하면 됨</td></tr>
+      </tbody>
+    </table>
+    <p class="note">이진 트리는 노드 하나의 자식이 최대 2개다. 다만 같은 레벨의 노드 수는 많아질 수 있으므로, 레벨별 처리가 필요하면 <code>nodeSize</code>로 경계를 고정한다.</p>
+  </section>
+</main>
+</body>
+</html>
