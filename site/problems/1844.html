@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>1844 게임 맵 최단거리</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .map { display:grid; grid-template-columns:repeat(4,58px); gap:7px; margin:16px 0; }
+    .cell { height:58px; display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:10px; background:#e7eef8; font-weight:800; }
+    .wall { background:#2e3a4b; color:#fff; }.current { background:#ffd47a; outline:3px solid #f3a500; }.visited { background:#9ce3bf; }.goal { border:3px solid #3976dc; }
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <div class="nav"><a href="../index.html">← 홈</a><a href="https://github.com/rumblebot-0318/algorithm-study/tree/main/Programmers/Lv2/1844-%EA%B2%8C%EC%9E%84-%EB%A7%B5-%EC%B5%9C%EB%8B%A8%EA%B1%B0%EB%A6%AC">GitHub 풀이</a></div>
+  <section class="hero"><div class="eyebrow">Programmers Lv.2 · 1844</div><h1>게임 맵 최단거리: 큐에 넣을 때 방문 처리</h1><p>현재 칸에서 상·하·좌·우로 한 칸씩 이동한다. 길은 1, 벽은 0이다.</p></section>
+  <section class="split">
+    <article class="panel">
+      <h2>PriorityQueue 탐색 흐름</h2>
+      <div class="map" id="map"></div>
+      <p id="text" class="note"></p>
+      <p id="queue" class="result"></p>
+      <div class="nav"><button id="prev" class="btn secondary">← 이전</button><button id="next" class="btn">다음 →</button></div>
+    </article>
+    <article class="panel">
+      <h2>방문 처리 위치</h2>
+      <pre><code>if (!visited[nextY][nextX]
+        && maps[nextY][nextX] == 1) {
+    visited[nextY][nextX] = true;
+    queue.add(new Node(
+        nextY, nextX, cur.dist + 1));
+}</code></pre>
+      <p class="note">방문 처리를 <b>큐에 넣기 전</b>에 한다. 같은 칸을 다른 경로가 발견해도 이미 <code>true</code>라서 중복 삽입되지 않는다.</p>
+      <p class="note">시작점도 <code>queue.add(...)</code> 직후 <code>visited[0][0] = true</code>가 필요하다.</p>
+    </article>
+  </section>
+</main>
+<script>
+const grid=[[1,1,0,1],[0,1,1,1],[0,0,1,1],[1,1,1,1]];
+const steps=[
+ {cur:[0,0],seen:[[0,0]],text:'시작점 (0, 0)을 거리 1로 큐에 넣고 즉시 방문 처리한다.',q:'큐: [(0,0,1)]'},
+ {cur:[0,1],seen:[[0,0],[0,1]],text:'거리 1인 시작점을 꺼냈다. 오른쪽 (0, 1)은 길이고 미방문이다. 거리 2로 넣으면서 방문 처리한다.',q:'큐: [(0,1,2)]'},
+ {cur:[1,1],seen:[[0,0],[0,1],[1,1]],text:'(0, 1)을 꺼냈다. 아래 (1, 1)을 거리 3으로 넣는다. 벽은 넣지 않는다.',q:'큐: [(1,1,3)]'},
+ {cur:[1,2],seen:[[0,0],[0,1],[1,1],[1,2]],text:'계속 거리 순서대로 가장 가까운 칸을 꺼내 탐색한다. PriorityQueue는 dist가 작은 Node를 먼저 준다.',q:'큐: [(1,2,4), ...]'},
+ {cur:[3,3],seen:[[0,0],[0,1],[1,1],[1,2],[1,3],[2,2],[2,3],[3,2],[3,3]],text:'목표 (3, 3)를 처음 꺼낸 거리값이 최단 거리다. 실제 문제에서는 이 시점에 바로 return 한다.',q:'return cur.dist'}
+];
+let i=0;
+function key(p){return p[0]+','+p[1]}
+function render(){const s=steps[i]; const seen=new Set(s.seen.map(key)); const c=key(s.cur); document.getElementById('map').innerHTML=grid.flatMap((row,y)=>row.map((v,x)=>{let cls='cell '+(v===0?'wall ':'')+(seen.has(y+','+x)?'visited ':'')+(c===y+','+x?'current ':'')+(y===3&&x===3?'goal ':'');return `<div class="${cls}">${v===0?'벽':'('+y+','+x+')'}</div>`})).join('');document.getElementById('text').textContent=s.text;document.getElementById('queue').textContent=s.q;document.getElementById('prev').disabled=i===0;document.getElementById('next').textContent=i===steps.length-1?'처음부터':'다음 →';}
+document.getElementById('prev').onclick=()=>{if(i>0){i--;render()}};document.getElementById('next').onclick=()=>{i=i===steps.length-1?0:i+1;render()};render();
+</script>
+</body>
+</html>
