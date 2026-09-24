@@ -19,6 +19,7 @@
 | 1204 | 최빈수 구하기 | D2 | 카운팅 배열, 빈도수 계산 | [풀이](./SWEA/D2/1204-최빈수-구하기/README.md) | [페이지](https://rumblebot-0318.github.io/algorithm-study/problems/1204.html) |
 | 1954 | 달팽이 숫자 | D2 | 2차원 배열, 방향 전환, 구현 | [풀이](./SWEA/D2/1954-달팽이-숫자/README.md) | [페이지](https://rumblebot-0318.github.io/algorithm-study/problems/1954.html) |
 | 2001 | 파리 퇴치 | D2 | 2차원 배열, 완전탐색 | [풀이](./SWEA/D2/2001-파리-퇴치/README.md) | [페이지](https://rumblebot-0318.github.io/algorithm-study/problems/2001.html) |
+| 42586 | 기능개발 | Programmers Lv.2 | 구현, 배열, 배포 묶음 | [풀이](./Programmers/Lv2/42586-기능개발/README.md) | [페이지](https://rumblebot-0318.github.io/algorithm-study/problems/42586.html) |
 
 ## 풀이 원칙
 
