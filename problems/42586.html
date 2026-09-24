@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>42586 기능개발</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main class="wrap">
+  <div class="nav"><a href="../index.html">← 홈</a><a href="https://github.com/rumblebot-0318/algorithm-study/tree/main/Programmers/Lv2/42586-%EA%B8%B0%EB%8A%A5%EA%B0%9C%EB%B0%9C">GitHub 풀이</a></div>
+  <section class="hero">
+    <div class="eyebrow">Programmers Lv.2 · 42586</div>
+    <h1>기능개발: 앞 기능을 기다려 같이 배포한다</h1>
+    <p>완료일이 빠르더라도 앞 기능보다 먼저 배포할 수 없다. 배포 기준일과 현재 묶음의 크기만 관리한다.</p>
+  </section>
+  <section class="split">
+    <article class="panel">
+      <h2>한 단계씩 보기</h2>
+      <p id="description"></p>
+      <div class="viz" id="jobs"></div>
+      <p class="result" id="state"></p>
+      <div class="nav"><button class="btn secondary" id="prev">← 이전</button><button class="btn" id="next">다음 →</button></div>
+    </article>
+    <article class="panel">
+      <h2>기억할 규칙 하나</h2>
+      <pre><code>if (left &lt;= currentDays) {
+    count++;
+} else {
+    ans.add(count);
+    currentDays = left;
+    count = 1;
+}</code></pre>
+      <p class="note"><code>left &lt;= currentDays</code>면 현재 기능은 먼저 끝났더라도 앞 기능을 기다린다. 따라서 같은 배포 묶음에 넣는다.</p>
+      <p class="note">완료일은 <code>(100 - progress + speed - 1) / speed</code>로 올림 계산한다.</p>
+    </article>
+  </section>
+</main>
+<script>
+const steps = [
+  {text:'완료일은 기능 1: 7일, 기능 2: 3일, 기능 3: 9일이다. 앞 기능이 끝나야 배포 문이 열린다.', days:[7,3,9], active:-1, release:0, count:0, answer:'[]'},
+  {text:'기능 1은 7일째 완료다. 첫 배포 묶음을 시작한다.', days:[7,3,9], active:0, release:7, count:1, answer:'[]'},
+  {text:'기능 2는 3일째 완료다. 3일은 7일보다 빠르지만 앞 기능 1을 지나칠 수 없다. count만 2가 된다.', days:[7,3,9], active:1, release:7, count:2, answer:'[]'},
+  {text:'기능 3은 9일째 완료다. 9일은 7일보다 늦다. 기존 묶음 [기능 1, 기능 2]를 배포해 2를 기록하고 새 묶음을 시작한다.', days:[7,3,9], active:2, release:9, count:1, answer:'[2]'},
+  {text:'반복문이 끝났다. 마지막 묶음도 기록한다.', days:[7,3,9], active:-1, release:9, count:1, answer:'[2, 1]'}
+];
+let step = 0;
+function render() {
+  const s = steps[step];
+  document.getElementById('description').textContent = s.text;
+  document.getElementById('jobs').innerHTML = s.days.map((day, i) => `<span style="${i === s.active ? 'outline:3px solid #ffbd66;background:#fff3df;' : ''}">기능 ${i + 1}<br><b>${day}일</b></span>`).join('');
+  document.getElementById('state').innerHTML = `currentDays = <span class="good">${s.release}</span> / count = <span class="good">${s.count}</span> / answer = <span class="good">${s.answer}</span>`;
+  document.getElementById('prev').disabled = step === 0;
+  document.getElementById('next').textContent = step === steps.length - 1 ? '처음부터' : '다음 →';
+}
+document.getElementById('prev').onclick = () => { if (step > 0) { step--; render(); } };
+document.getElementById('next').onclick = () => { step = step === steps.length - 1 ? 0 : step + 1; render(); };
+render();
+</script>
+</body>
+</html>
