@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>문자 격자 ? 채우기 · 완전탐색 + BFS</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .board{display:grid;grid-template-columns:repeat(3,72px);gap:8px;margin:18px 0}.cell{height:72px;border-radius:14px;display:grid;place-items:center;font-size:28px;font-weight:800;background:#e7eef8}.a{background:#a8dfc1}.b{background:#ffd47a}.c{background:#cfc5f8}.question{outline:3px dashed #64748b}.choice.active{outline:3px solid #1d4ed8}.code{white-space:pre-wrap;overflow:auto}.formula{font-size:1.1rem;font-weight:700}.pass{color:#0f7a44;font-weight:800}
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <div class="nav"><a href="../index.html">← 홈</a><a href="https://github.com/rumblebot-0318/algorithm-study/tree/main/Practice/BruteForce/grid-question-connectivity">GitHub 풀이</a></div>
+  <section class="hero">
+    <div class="eyebrow">Brute Force · BFS</div>
+    <h1>문자 격자 <code>?</code> 채우기: 모든 조합을 만들고 연결성을 검사한다</h1>
+    <p><code>?</code>마다 <code>a / b / c</code>를 하나 고른 뒤, 완성된 격자에서 존재하는 각 문자가 하나의 상하좌우 연결 그룹인지 BFS로 확인한다.</p>
+  </section>
+
+  <section class="split">
+    <article class="panel">
+      <h2>결정 단위</h2>
+      <p class="formula"><code>?</code> 하나 → <code>a</code>, <code>b</code>, <code>c</code> 중 하나 선택</p>
+      <p><code>?</code>가 Q개면 후보는 <code>3<sup>Q</sup></code>개다. DFS는 현재 위치 <code>idx</code>에 문자를 하나 넣고 다음 <code>?</code>로 내려간다.</p>
+      <pre class="code"><code>for (char letter : letters) {
+    combinations[idx] = letter;
+    makeCombinations(idx + 1);
+}</code></pre>
+      <p class="note">리프(<code>idx == questions</code>)에서만 조합을 격자에 적용하고 BFS 판정을 한다.</p>
+    </article>
+
+    <article class="panel">
+      <h2><code>aa?</code> 손추적</h2>
+      <div class="nav" id="choices">
+        <button class="btn choice active" data-letter="a">? = a</button>
+        <button class="btn secondary choice" data-letter="b">? = b</button>
+        <button class="btn secondary choice" data-letter="c">? = c</button>
+      </div>
+      <div class="board" id="board"></div>
+      <p id="result" class="result"></p>
+      <p class="note">세 조합 모두 유효하다. 그래서 이 예제의 답은 <b>3</b>이다.</p>
+    </article>
+  </section>
+
+  <section class="panel">
+    <h2>리프에서 하는 일: 조합 적용 → 문자별 BFS</h2>
+    <pre class="code"><code>// 원본은 다음 조합에서도 재사용하므로 deep copy
+for (int y = 0; y &lt; height; y++) {
+    curTmp[y] = mapToCharArray[y].clone();
+}
+
+// ? 좌표에 현재 조합 적용
+for (int i = 0; i &lt; questionsNodes.size(); i++) {
+    Node node = questionsNodes.get(i);
+    curTmp[node.y][node.x] = combinations[i];
+}
+
+int sum = 0;
+for (char letter : letters) {
+    Node start = getPosition(letter, curTmp);
+    if (start != null) sum += getCount(start, curTmp);
+}
+if (sum == totalSize) setCount++;</code></pre>
+    <p><b>판정 불변식:</b> 한 문자에서 처음 찾은 칸으로 BFS를 하면 그 문자와 연결된 덩어리 하나만 방문한다. 어떤 문자가 둘 이상으로 끊기면 방문 합이 전체 칸 수보다 작아진다.</p>
+  </section>
+
+  <section class="panel">
+    <h2>복잡도와 주의점</h2>
+    <table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody>
+      <tr><td>시간</td><td><code>O(3<sup>Q</sup> × N)</code> — Q개의 물음표 조합마다 N칸 격자를 검사</td></tr>
+      <tr><td>공간</td><td><code>O(N + Q)</code> — 복사 격자, 방문 배열, 현재 조합</td></tr>
+      <tr><td>방문 처리</td><td>큐에 넣는 순간 <code>visited[nextY][nextX] = true</code>로 바꿔 중복 삽입을 막는다.</td></tr>
+      <tr><td>빈 문자</td><td>어떤 문자가 아예 없으면 BFS를 건너뛴다. 이 풀이에서는 그 자체를 실패로 세지 않는다.</td></tr>
+    </tbody></table>
+    <p class="note">현재 코드의 조합 생성은 <code>?</code>가 하나 이상 있다는 전제다. 물음표가 없을 수도 있다면 DFS 시작 전에 원본 격자를 바로 검사하는 분기가 필요하다.</p>
+  </section>
+</main>
+<script>
+const board=document.getElementById('board');
+const result=document.getElementById('result');
+function render(letter){
+  board.innerHTML=['a','a',letter].map((v,i)=>`<div class="cell ${v}${i===2?' choice active':''}">${v}</div>`).join('');
+  const labels={a:'a가 가로로 하나의 연결 그룹이다.',b:'a는 연결 그룹 하나, b는 한 칸짜리 그룹 하나다.',c:'a는 연결 그룹 하나, c는 한 칸짜리 그룹 하나다.'};
+  result.innerHTML=`<span class="pass">유효</span> — ${labels[letter]}`;
+  document.querySelectorAll('.choice').forEach(btn=>{const on=btn.dataset.letter===letter;btn.classList.toggle('active',on);btn.classList.toggle('secondary',!on);});
+}
+document.querySelectorAll('.choice').forEach(btn=>btn.addEventListener('click',()=>render(btn.dataset.letter)));
+render('a');
+</script>
+</body>
+</html>

@@ -21,6 +21,7 @@
 | 2001 | 파리 퇴치 | D2 | 2차원 배열, 완전탐색 | [풀이](./SWEA/D2/2001-파리-퇴치/README.md) | [페이지](https://rumblebot-0318.github.io/algorithm-study/problems/2001.html) |
 | 42586 | 기능개발 | Programmers Lv.2 | 구현, 배열, 배포 묶음 | [풀이](./Programmers/Lv2/42586-기능개발/README.md) | [페이지](https://rumblebot-0318.github.io/algorithm-study/problems/42586.html) |
 | 1844 | 게임 맵 최단거리 | Programmers Lv.2 | BFS, 최단거리, PriorityQueue | [풀이](./Programmers/Lv2/1844-게임-맵-최단거리/README.md) | [페이지](https://rumblebot-0318.github.io/algorithm-study/problems/1844.html) |
+| 연습 | 문자 격자 `?` 채우기 | Brute Force | 조합 생성, 2D BFS, 연결성 판정 | [풀이](./Practice/BruteForce/grid-question-connectivity/README.md) | [페이지](https://rumblebot-0318.github.io/algorithm-study/problems/grid-question-connectivity.html) |
 
 ## 풀이 원칙
 
