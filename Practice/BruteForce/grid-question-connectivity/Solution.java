@@ -101,7 +101,7 @@ class Solution {
     private static int getCount(Node cur, char[][] tmp) {
         int count = 0;
         boolean[][] visited = new boolean[height][width];
-        Queue<Node> queue = new ArrayDeque<>();
+        Queue<Node> queue = new LinkedList<>();
 
         queue.offer(cur);
         visited[cur.y][cur.x] = true;
