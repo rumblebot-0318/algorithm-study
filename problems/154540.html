@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>154540 무인도 여행 · BFS와 DFS 백트래킹</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .map { display:grid; grid-template-columns:repeat(3,72px); gap:8px; margin:16px 0; }
+    .cell { height:72px; display:grid; place-items:center; border-radius:12px; background:#e7eef8; color:#14203c; font-weight:900; }
+    .wall { background:#29344b; color:#fff; }.path { background:#fbbf24; outline:3px solid #f59e0b; }.done { background:#6ee7b7; }.choice { background:#c4b5fd; }
+    .legend { display:flex; flex-wrap:wrap; gap:8px; color:var(--muted); font-size:.9rem; }.legend span { padding:3px 9px; border-radius:999px; border:1px solid var(--line); }
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <div class="nav"><a href="../index.html">← 홈</a><a href="https://github.com/rumblebot-0318/algorithm-study/tree/main/Programmers/Lv2/154540-%EB%AC%B4%EC%9D%B8%EB%8F%84-%EC%97%AC%ED%96%89">GitHub 풀이</a></div>
+  <section class="hero"><div class="eyebrow">Programmers Lv.2 · 154540</div><h1>무인도 여행 + DFS의 되돌리기</h1><p>섬의 합은 한 번 방문한 칸을 영구 표시한다. 반대로 최장 경로 DFS는 다른 길도 시험해야 하므로, 재귀에서 돌아올 때 방문을 되돌린다.</p></section>
+
+  <section class="split">
+    <article class="panel">
+      <h2>최장 경로 DFS: 한 경로를 끝까지 갔다가 되돌리기</h2>
+      <div class="legend"><span>🟨 현재 경로</span><span>🟩 탐색을 끝낸 분기</span><span>🟪 다음 선택지</span></div>
+      <div class="map" id="map"></div>
+      <p id="text" class="note"></p>
+      <p id="code" class="result"></p>
+      <div class="nav"><button id="prev" class="btn secondary">← 이전</button><button id="next" class="btn">다음 →</button></div>
+    </article>
+    <article class="panel">
+      <h2>원복을 결정하는 질문</h2>
+      <p class="note"><b>“다른 경로에서도 이 칸을 다시 써봐야 하는가?”</b></p>
+      <table><thead><tr><th>문제 목표</th><th>방문 처리</th></tr></thead><tbody>
+        <tr><td>무인도 섬 합</td><td>한 번 합산하면 끝 → 원복 없음</td></tr>
+        <tr><td>BFS 최단거리</td><td>먼저 도착한 경로가 최단 → 원복 없음</td></tr>
+        <tr><td>DFS 최장 단순 경로</td><td>다른 갈림길도 비교 → 원복 필요</td></tr>
+      </tbody></table>
+      <pre><code>visited[y][x] = true;
+dfs(nextY, nextX, length + 1);
+visited[y][x] = false; // backtracking</code></pre>
+      <p class="note">DFS = 무조건 원복이 아니다. <b>현재 경로 전용 방문 배열</b>일 때만 원복한다.</p>
+    </article>
+  </section>
+</main>
+<script>
+const grid=[['S','1','X'],['X','1','1'],['1','1','E']];
+const steps=[
+  {path:[[0,0]],done:[],choice:[0,1],text:'시작점 S를 현재 경로에 넣는다. visited[0][0] = true.',code:'dfs(0, 0, 0) 시작'},
+  {path:[[0,0],[0,1],[1,1],[1,2],[2,2]],done:[],choice:null,text:'첫 번째 길을 따라 E까지 깊게 들어왔다. 현재 경로 길이를 답 후보로 기록한다.',code:'maxLength = Math.max(maxLength, length)'},
+  {path:[[0,0],[0,1],[1,1]],done:[[1,2],[2,2]],choice:[2,1],text:'막다른 경로에서 돌아온다. (1,2), (2,2)는 이 경로에서만 사용했으므로 방문을 풀고, (1,1)의 다른 선택지로 간다.',code:'visited[2][2] = false; // 되돌리기'},
+  {path:[[0,0],[0,1],[1,1],[2,1],[2,0]],done:[[1,2],[2,2]],choice:null,text:'다른 갈림길도 새 경로로 탐색한다. 원복이 없었다면 이미 방문된 칸이라 이 비교 자체를 못 한다.',code:'dfs(2, 1, length + 1)'},
+];
+let i=0; const key=p=>p[0]+','+p[1];
+function render(){const s=steps[i], path=new Set(s.path.map(key)), done=new Set(s.done.map(key)), choice=s.choice?key(s.choice):''; document.getElementById('map').innerHTML=grid.flatMap((row,y)=>row.map((v,x)=>{const k=y+','+x;let cls='cell ';if(v==='X')cls+='wall';else if(path.has(k))cls+='path';else if(done.has(k))cls+='done';else if(k===choice)cls+='choice';return `<div class="${cls}">${v}</div>`})).join('');document.getElementById('text').textContent=s.text;document.getElementById('code').textContent=s.code;document.getElementById('prev').disabled=i===0;document.getElementById('next').textContent=i===steps.length-1?'처음부터':'다음 →';}
+document.getElementById('prev').onclick=()=>{if(i>0){i--;render()}};document.getElementById('next').onclick=()=>{i=i===steps.length-1?0:i+1;render()};render();
+</script>
+</body>
+</html>
